@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Tourist Destination</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Delete Tourist Destination</h2>
+        <p>Are you sure you want to delete the following tourist destination?</p>
+        
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ destination.Place_name }}</h5>
+                <p class="card-text"><strong>Weather:</strong> {{ destination.Weather }}</p>
+                <p class="card-text"><strong>Location:</strong> {{ destination.Location }}</p>
+                <p><img src="{{ destination.Image.url }}" alt="{{ destination.Place_name }}" style="width: 150px; height: auto;"></p>
+            </div>
+        </div>
+
+        <form method="POST" action="{% url 'delete_tourist_destination' destination.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger mt-3">Yes, Delete</button>
+            <a href="{% url 'destination_list' %}" class="btn btn-secondary mt-3">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Tourist Destination</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Header Section -->
+        <div class="text-center mb-4">
+            <h2 class="display-4">Update Tourist Destination</h2>
+            <p class="text-muted">Edit details of the tourist destination below.</p>
+        </div>
+        
+        <!-- Update Form Section -->
+        <div class="card p-4 shadow-sm">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Dynamic Form Fields -->
+                {{ form.as_p }}
+                
+                <!-- Submit and Cancel Buttons -->
+                <div class="form-group text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">Update</button>
+                    <a href="{% url 'destination_list' %}" class="btn btn-secondary btn-lg px-5 ml-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Current Image Display -->
+        {% if destination.Image %}
+            <div class="text-center mt-4">
+                <h5 class="mb-3">Current Image:</h5>
+                <img src="{{ destination.Image.url }}" alt="{{ destination.Place_name }}" class="img-thumbnail" style="width: 200px; height: auto;">
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

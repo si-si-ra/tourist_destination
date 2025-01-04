@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourist Destinations</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Page Header -->
+        <div class="text-center mb-4">
+            <h2 class="display-4">Tourist Destinations</h2>
+        </div>
+
+        <!-- Flash Messages -->
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Search Form -->
+        <form method="POST" class="mb-4">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="search" placeholder="Search by Place Name" class="form-control" aria-label="Search by Place Name">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Search Results or All Destinations -->
+        {% if data %}
+            <h3>Search Results</h3>
+            <table class="table table-bordered table-hover mt-3">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Place Name</th>
+                        <th>Weather</th>
+                        <th>Location</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for destination in data %}
+                        <tr>
+                            <td>{{ destination.Place_name }}</td>
+                            <td>{{ destination.Weather }}</td>
+                            <td>{{ destination.Location }}</td>
+                            <td><img src="{{ destination.Image }}" alt="{{ destination.Place_name }}" style="width: 100px; height: auto;" class="img-thumbnail"></td>
+                            <td>
+                                <a href="{% url 'fetch_tourist_destination' id=destination.id %}" class="btn btn-info btn-sm">View</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% elif touristdestinations %}
+            <h3>All Destinations</h3>
+            <table class="table table-bordered table-hover mt-3">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Place Name</th>
+                        <th>Weather</th>
+                        <th>Location</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for destination in touristdestinations %}
+                        <tr>
+                            <td>{{ destination.Place_name }}</td>
+                            <td>{{ destination.Weather }}</td>
+                            <td>{{ destination.Location }}</td>
+                            <td><img src="{{ destination.Image }}" alt="{{ destination.Place_name }}" style="width: 100px; height: auto;" class="img-thumbnail"></td>
+                            <td>
+                                <a href="{% url 'view' id=destination.id %}" class="btn btn-info btn-sm">View</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Pagination Controls -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                {% if touristdestinations.has_previous %}
+                    <a href="?page=1" class="btn btn-primary btn-sm">First</a>
+                    <a href="?page={{ touristdestinations.previous_page_number }}" class="btn btn-primary btn-sm">Previous</a>
+                {% endif %}
+                <span>Page {{ touristdestinations.number }} of {{ touristdestinations.paginator.num_pages }}</span>
+                {% if touristdestinations.has_next %}
+                    <a href="?page={{ touristdestinations.next_page_number }}" class="btn btn-primary btn-sm">Next</a>
+                    <a href="?page={{ touristdestinations.paginator.num_pages }}" class="btn btn-primary btn-sm">Last</a>
+                {% endif %}
+            </div>
+        {% else %}
+            <p class="text-muted">No destinations found.</p>
+        {% endif %}
+    </div>
+
+    <!-- Optional JavaScript for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
